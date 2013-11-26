@@ -17,7 +17,7 @@ public class VideoInfo {
     public static void main(String[] args){
         // Create a Xuggler container object
         IContainer container = IContainer.make();
-
+        System.out.println(filename);
         // Attempt to open the container
         int result = container.open(filename, IContainer.Type.READ, null);
 
@@ -44,7 +44,7 @@ public class VideoInfo {
         System.out.println("Bit Rate: " + bitRate);
 
         // Iterate trough the streams to print their meta data
-        for (int i=0; i<numStreams; i++){
+        for (int i=0; i<numStreams-1; i++){
 
             // Find the stream object
             IStream stream = container.getStream(i);
@@ -81,5 +81,6 @@ public class VideoInfo {
             System.out.println();
             System.out.println("*** End of Stream Info ***");
         }
+
     }
 }
