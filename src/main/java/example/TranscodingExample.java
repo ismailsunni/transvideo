@@ -18,7 +18,7 @@ import com.xuggle.mediatool.ToolFactory;
 public class TranscodingExample {
     
     private static final String inputFilename = "/home/ismailsunni/Downloads/a.mp4";
-    private static final String outputFilename = "/home/ismailsunni/Downloads/a.flv";
+    private static final String outputFilename = "/home/ismailsunni/Downloads/b.flv";
     
     public static void main(String[] args){
         // Create a media reader
@@ -32,14 +32,21 @@ public class TranscodingExample {
         mediaReader.addListener(mediaWriter);
         
         // Create a media viewer with stats enabled
-        IMediaViewer mediaViewer = ToolFactory.makeViewer(true);
+//        IMediaViewer mediaViewer = ToolFactory.makeViewer(true);
         
         // Add viewer to the reader, to see the decoded media
-        mediaReader.addListener(mediaViewer);
+//        mediaReader.addListener(mediaViewer);
         
         // Read and decode packet from the source file and
         // dispatch decoded audio and video to the writer
-        while (mediaReader.readPacket() == null);
+        
+        int i = 0;
+        while (mediaReader.readPacket() == null){
+            // Just for checking if the run is still running
+            System.out.println(i);
+            i += 1;
+        }
+        System.out.println("fin");
     }
     
 }
