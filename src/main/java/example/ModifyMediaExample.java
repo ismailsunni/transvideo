@@ -27,9 +27,9 @@ import javax.imageio.ImageIO;
  * @author ismailsunni
  */
 public class ModifyMediaExample {
-    private static final String inputFilename = "c:/myvideo.mp4";
-    private static final String outputFilename = "c:/myvideo.flv";
-    private static final String imageFilename = "c:/jcg_logo_small.png";
+    private static final String inputFilename = "/home/ismailsunni/Downloads/a.mp4";
+    private static final String outputFilename = "/home/ismailsunni/Downloads/ab.mp4";
+    private static final String imageFilename = "/home/ismailsunni/Downloads/PRETZ.png";
     
     public static void main(String[] args){
         // Create a media reader
@@ -43,7 +43,19 @@ public class ModifyMediaExample {
                 ToolFactory.makeWriter(outputFilename, mediaReader);
         
         IMediaTool imageMediaTool = new StaticImageMediaTool(imageFilename);
-        IMediaTool audioVolumeMediaTool = new VolumeAdjustMediaTool(0,1);
+        IMediaTool audioVolumeMediaTool = new VolumeAdjustMediaTool(0.1);
+        
+        // Create a tool chain
+        // Reader -> addStaticImage -> reduceVolume -> writer
+        mediaReader.addListener(imageMediaTool);
+        imageMediaTool.addListener(audioVolumeMediaTool);
+        audioVolumeMediaTool.addListener(mediaWriter);
+        
+        int i = 0;
+        while (mediaReader.readPacket() == null){
+            i += 1;
+            System.out.println(i);
+        }
         
     }
 
@@ -100,6 +112,9 @@ public class ModifyMediaExample {
             for (int i = 0; i < buffer.limit(); ++i){
                 buffer.put(i, (short)(buffer.get(i) * mVolume));
             }
+            
+            // Cal parent which will call pass the audio onto next tool in chain
+            super.onAudioSamples(event);
         }
     }
     
